@@ -15,12 +15,17 @@ public class App
 	
     public static void main( String[] args )
     {
-        ThreadContext.put("shouldDebug", "false");
-        LOG.debug("one");
-        ThreadContext.put("shouldDebug", "true");
-        LOG.debug("two");
-        
+        ThreadContext.put("household", "User12");
         LOG.error("error", new java.lang.Exception());
+        LOG.debug("one");
+        ThreadContext.put("household", "User1");
+        LOG.debug("two");
+        ThreadContext.put("household", "User12");
+        LOG.error("error", new java.lang.Exception());
+        ThreadContext.put("household", "User12");
+        LOG.debug("three");
+        ThreadContext.put("household", "User1");
+        LOG.debug("four");
         
     }
 }

@@ -1,7 +1,8 @@
 <Configuration>
-  <ThreadContextMapFilter onMatch="ACCEPT" onMismatch="REJEST">
-    <KeyValuePair key="shouldDebug" value="true"/>
-  </ThreadContextMapFilter>
+  <DynamicThresholdFilter key="household" defaultThreshold="ERROR" onMatch="ACCEPT" onMismatch="REJECT">
+    <KeyValuePair key="User1" value="DEBUG"/>
+  </DynamicThresholdFilter>
+
   <Appenders>
     <File name="A1" fileName="A1.log" append="false">
       <PatternLayout pattern="%t %-5p %c{2} - %m%n"/>
