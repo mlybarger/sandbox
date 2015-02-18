@@ -20,10 +20,12 @@ public class App
         LOG.debug("one");
         ThreadContext.put("household", "User1");
         LOG.debug("two");
+        LOG.info("INFO");
         ThreadContext.put("household", "User12");
         LOG.error("error", new java.lang.Exception());
         ThreadContext.put("household", "User12");
         LOG.debug("three");
+        LOG.info("INFO 2");
         ThreadContext.put("household", "User1");
         LOG.debug("four");
         

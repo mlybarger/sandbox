@@ -1,5 +1,5 @@
 <Configuration>
-  <DynamicThresholdFilter key="household" defaultThreshold="ERROR" onMatch="ACCEPT" onMismatch="REJECT">
+  <DynamicThresholdFilter key="household" defaultThreshold="INFO" onMatch="ACCEPT" onMismatch="DENY">
     <KeyValuePair key="User1" value="DEBUG"/>
   </DynamicThresholdFilter>
 
