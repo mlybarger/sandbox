@@ -1,6 +1,5 @@
 <Configuration>
-  <DynamicThresholdFilter key="household" defaultThreshold="INFO" onMatch="ACCEPT" onMismatch="DENY">
-    <KeyValuePair key="User44" value="DEBUG"/>
+  <DynamicThresholdFilter key="household" defaultThreshold="ERROR" onMatch="ACCEPT" onMismatch="DENY">
   </DynamicThresholdFilter>
 
   <Appenders>
@@ -12,10 +11,10 @@
     </Console>
   </Appenders>
   <Loggers>
-    <Logger name="org.apache.log4j.xml" level="debug">
+    <Logger name="org.apache.log4j.xml" level="error">
       <AppenderRef ref="A1"/>
     </Logger>
-    <Root level="debug">
+    <Root level="error">
       <AppenderRef ref="STDOUT"/>
     </Root>
   </Loggers>
