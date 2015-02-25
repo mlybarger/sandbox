@@ -27,19 +27,23 @@ public class App
 	private static final ArrayList<String> TEST_HOUSEHOLDS = new ArrayList<String>(Arrays.asList("40001", "40002", "40003","40004", "40005","40006"));
 	
 	private static String users = System.getProperty("households");
+	private static String CCF_FILTER_LEVEL = System.getProperty("ccf.filter.level");
 	
 	private static synchronized void configureLogger() {
 		// synchronized method to ensure only one update the logger occurs at a time.
+		
+		if (CCF_FILTER_LEVEL != System.getProperty("ccf.filter.level")) {
+			CCF_FILTER_LEVEL = System.getProperty("ccf.filter.level");
+		}
 		String[] userArray = users.split(",");
 		final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
 		Configuration cfg = ctx.getConfiguration();
 		if ((userArray != null) && (userArray.length == 1)) {
 			if ("ALL".equals(userArray[0])) {
 				ctx.getConfiguration().removeFilter(cfg.getFilter());
-				cfg.addFilter(ThresholdFilter.createFilter(Level.DEBUG,Result.ACCEPT,Result.DENY));
+				cfg.addFilter(ThresholdFilter.createFilter(Level.getLevel(CCF_FILTER_LEVEL),Result.ACCEPT,Result.DENY));
 			}
 		} else {
-
 			ctx.getConfiguration().removeFilter(cfg.getFilter());
 			DynamicThresholdFilter dtf = DynamicThresholdFilter.createFilter("household", new KeyValuePair[0], Level.INFO,Result.ACCEPT,Result.DENY);
 			cfg.addFilter(dtf);
@@ -47,7 +51,7 @@ public class App
 
 			for (String user : userArray) {
 				if (dtf.getLevelMap().get(user) == null) {
-					dtf.getLevelMap().put(user, Level.DEBUG);
+					dtf.getLevelMap().put(user, Level.getLevel(CCF_FILTER_LEVEL));
 				}
 			}
 		}
@@ -55,6 +59,7 @@ public class App
 	
     public static void main( String[] args )
     {
+    	System.setProperty("ccf.filter.level", "DEBUG");
     	
     	System.setProperty("households", "40001,40006");
     	LOG.error("debug :" + System.getProperty("households"));
@@ -85,7 +90,30 @@ public class App
     	}
     	    	
     	logMessages();
+
+    	System.setProperty("ccf.filter.level", "TRACE");
     	
+    	System.setProperty("households", "40001,FOO");
+    	LOG.error("trace :" + System.getProperty("households"));
+    	
+    	if (users != System.getProperty("households")) {
+    		users = System.getProperty("households");
+        	configureLogger();
+    	}
+    	    	
+    	logMessages();    	
+    	
+    	System.setProperty("ccf.filter.level", "TRACE");
+    	
+    	System.setProperty("households", "ALL");
+    	LOG.error("trace :" + System.getProperty("households"));
+    	
+    	if (users != System.getProperty("households")) {
+    		users = System.getProperty("households");
+        	configureLogger();
+    	}
+    	    	
+    	logMessages();    	
     }
     
     private static void logMessages() {
