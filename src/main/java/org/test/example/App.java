@@ -55,13 +55,10 @@ public class App
 	
     public static void main( String[] args )
     {
-    	// Logging only to debug for household User1.
-
+    	
     	System.setProperty("households", "40001,40006");
     	LOG.error("debug :" + System.getProperty("households"));
     	
-    	// if the system property has changed, programmatically configure logger.
-    	// this could be first in servlet method or some such.
     	if (users != System.getProperty("households")) {
     		users = System.getProperty("households");
         	configureLogger();
@@ -72,8 +69,6 @@ public class App
     	System.setProperty("households", "ALL");
     	LOG.error("debug :" + System.getProperty("households"));
     	
-    	// if the system property has changed, programmatically configure logger.
-    	// this could be first in servlet method or some such.
     	if (users != System.getProperty("households")) {
     		users = System.getProperty("households");
         	configureLogger();
@@ -84,8 +79,6 @@ public class App
     	System.setProperty("households", "40001,40006");
     	LOG.error("debug :" + System.getProperty("households"));
     	
-    	// if the system property has changed, programmatically configure logger.
-    	// this could be first in servlet method or some such.
     	if (users != System.getProperty("households")) {
     		users = System.getProperty("households");
         	configureLogger();
