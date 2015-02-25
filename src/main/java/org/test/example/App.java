@@ -58,6 +58,7 @@ public class App
     	// Logging only to debug for household User1.
 
     	System.setProperty("households", "40001,40006");
+    	LOG.error("debug :" + System.getProperty("households"));
     	
     	// if the system property has changed, programmatically configure logger.
     	// this could be first in servlet method or some such.
@@ -68,8 +69,8 @@ public class App
     	    	
     	logMessages();
         
-    	LOG.error("now test all");
     	System.setProperty("households", "ALL");
+    	LOG.error("debug :" + System.getProperty("households"));
     	
     	// if the system property has changed, programmatically configure logger.
     	// this could be first in servlet method or some such.
@@ -81,6 +82,7 @@ public class App
     	logMessages();
     	
     	System.setProperty("households", "40001,40006");
+    	LOG.error("debug :" + System.getProperty("households"));
     	
     	// if the system property has changed, programmatically configure logger.
     	// this could be first in servlet method or some such.

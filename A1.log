@@ -1,3 +1,4 @@
+main ERROR {}[household] example.App - debug :40001,40006
 main DEBUG {household=40001}[household] example.App - household:40001
 main INFO  {household=40001}[household] example.App - household:40001
 main INFO  {household=40002}[household] example.App - household:40002
@@ -6,7 +7,7 @@ main INFO  {household=40004}[household] example.App - household:40004
 main INFO  {household=40005}[household] example.App - household:40005
 main DEBUG {household=40006}[household] example.App - household:40006
 main INFO  {household=40006}[household] example.App - household:40006
-main ERROR {household=40006}[household] example.App - now test all
+main ERROR {household=40006}[household] example.App - debug :ALL
 main DEBUG {household=40001}[household] example.App - household:40001
 main INFO  {household=40001}[household] example.App - household:40001
 main DEBUG {household=40002}[household] example.App - household:40002
@@ -19,6 +20,7 @@ main DEBUG {household=40005}[household] example.App - household:40005
 main INFO  {household=40005}[household] example.App - household:40005
 main DEBUG {household=40006}[household] example.App - household:40006
 main INFO  {household=40006}[household] example.App - household:40006
+main ERROR {household=40006}[household] example.App - debug :40001,40006
 main DEBUG {household=40001}[household] example.App - household:40001
 main INFO  {household=40001}[household] example.App - household:40001
 main INFO  {household=40002}[household] example.App - household:40002
