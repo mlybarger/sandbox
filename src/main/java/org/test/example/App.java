@@ -1,13 +1,19 @@
 package org.test.example;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 import org.apache.logging.log4j.core.Filter;
+import org.apache.logging.log4j.core.Filter.Result;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.filter.DynamicThresholdFilter;
+import org.apache.logging.log4j.core.filter.ThresholdFilter;
+import org.apache.logging.log4j.core.util.KeyValuePair;
 
 
 /**
@@ -17,51 +23,84 @@ import org.apache.logging.log4j.core.filter.DynamicThresholdFilter;
 public class App 
 {
 	private static final Logger LOG = LogManager.getLogger(App.class);
+
+	private static final ArrayList<String> TEST_HOUSEHOLDS = new ArrayList<String>(Arrays.asList("40001", "40002", "40003","40004", "40005","40006"));
 	
-	private static String users = System.getProperty("household");
+	private static String users = System.getProperty("households");
 	
 	private static synchronized void configureLogger() {
 		// synchronized method to ensure only one update the logger occurs at a time.
-		String [] userArray = users.split(",");
-    	final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
-    	Configuration cfg = ctx.getConfiguration();
-    	Filter filter = cfg.getFilter();
-    	DynamicThresholdFilter dtf = (DynamicThresholdFilter) filter;
-    	for (String user: userArray){
-    		if (dtf.getLevelMap().get(user) == null) {
-    			dtf.getLevelMap().put(user, Level.DEBUG);
-    		}
-    	}
-    	// TODO: remove items in levelMap that aren't in users list.
+		String[] userArray = users.split(",");
+		final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+		Configuration cfg = ctx.getConfiguration();
+		if ((userArray != null) && (userArray.length == 1)) {
+			if ("ALL".equals(userArray[0])) {
+				ctx.getConfiguration().removeFilter(cfg.getFilter());
+				cfg.addFilter(ThresholdFilter.createFilter(Level.DEBUG,Result.ACCEPT,Result.DENY));
+			}
+		} else {
+
+			ctx.getConfiguration().removeFilter(cfg.getFilter());
+			DynamicThresholdFilter dtf = DynamicThresholdFilter.createFilter("household", new KeyValuePair[0], Level.INFO,Result.ACCEPT,Result.DENY);
+			cfg.addFilter(dtf);
+			dtf.getLevelMap().clear();
+
+			for (String user : userArray) {
+				if (dtf.getLevelMap().get(user) == null) {
+					dtf.getLevelMap().put(user, Level.DEBUG);
+				}
+			}
+		}
 	}
 	
     public static void main( String[] args )
     {
     	// Logging only to debug for household User1.
 
-    	System.setProperty("household", "40001,40006");
+    	System.setProperty("households", "40001,40006");
     	
     	// if the system property has changed, programmatically configure logger.
     	// this could be first in servlet method or some such.
-    	if (users != System.getProperty("household")) {
-    		users = System.getProperty("household");
+    	if (users != System.getProperty("households")) {
+    		users = System.getProperty("households");
         	configureLogger();
     	}
     	    	
-    	// the context.put will only be in the servlet/mdb once.
-        ThreadContext.put("household", "40001");
-        LOG.error("error", new java.lang.Exception());
-        LOG.debug("one");
-        ThreadContext.put("household", "40001");
-        LOG.debug("two");
-        LOG.info("INFO");
-        ThreadContext.put("household", "40005");
-        LOG.error("5 error", new java.lang.Exception());
-        ThreadContext.put("household", "40006");
-        LOG.debug("three");
-        LOG.info("INFO 2");
-        ThreadContext.put("household", "40001");
-        LOG.debug("four");
+    	logMessages();
         
+    	LOG.error("now test all");
+    	System.setProperty("households", "ALL");
+    	
+    	// if the system property has changed, programmatically configure logger.
+    	// this could be first in servlet method or some such.
+    	if (users != System.getProperty("households")) {
+    		users = System.getProperty("households");
+        	configureLogger();
+    	}
+    	        	
+    	logMessages();
+    	
+    	System.setProperty("households", "40001,40006");
+    	
+    	// if the system property has changed, programmatically configure logger.
+    	// this could be first in servlet method or some such.
+    	if (users != System.getProperty("households")) {
+    		users = System.getProperty("households");
+        	configureLogger();
+    	}
+    	    	
+    	logMessages();
+    	
+    }
+    
+    private static void logMessages() {
+    	for (String household: TEST_HOUSEHOLDS) {
+    		ThreadContext.put("household", household);
+            LOG.trace("household:" + household);
+            LOG.debug("household:" + household);
+            LOG.info("household:" + household);
+    		ThreadContext.remove(household);
+    	}
+    	
     }
 }

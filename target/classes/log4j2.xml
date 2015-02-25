@@ -1,22 +1,23 @@
 <Configuration>
-  <DynamicThresholdFilter key="household" defaultThreshold="ERROR" onMatch="ACCEPT" onMismatch="DENY">
+  <DynamicThresholdFilter key="household" defaultThreshold="INFO" onMatch="ACCEPT" onMismatch="DENY">
     <KeyValuePair key="User44" value="DEBUG"/>
   </DynamicThresholdFilter>
-
   <Appenders>
     <File name="A1" fileName="A1.log" append="false">
       <PatternLayout pattern="%t %-5p %X[household] %c{2} - %m%n"/>
     </File>
-    <Console name="STDOUT" target="SYSTEM_OUT">
-      <PatternLayout pattern="%d %-5p %X{household} [%t] %C{2} (%F:%L) - %m%n"/>
+    <Console name="CONSOLE">
+      <PatternLayout pattern="%t %-5p %X[household] %c{2} - %m%n"/>
     </Console>
   </Appenders>
   <Loggers>
-    <Logger name="org.apache.log4j.xml" level="error">
+    <Logger name="org.test" level="info" additivity="false">
       <AppenderRef ref="A1"/>
+      <AppenderRef ref="CONSOLE"/>
     </Logger>
     <Root level="error">
-      <AppenderRef ref="STDOUT"/>
+      <AppenderRef ref="A1"/>
+      <AppenderRef ref="CONSOLE"/>
     </Root>
   </Loggers>
 </Configuration>
